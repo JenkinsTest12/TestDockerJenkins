@@ -7,4 +7,4 @@ if [ ! -d "venv" ]; then
         virtualenv venv
 fi
 . venv/bin/activate
-pip install -r requirements.txt --download-cache=/tmp/$JOB_NAME
+pip install -r requirements.txt
