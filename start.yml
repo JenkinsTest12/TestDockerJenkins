@@ -11,4 +11,4 @@
   roles:
     #- base
     - web
-    #- nginx
+    - nginx

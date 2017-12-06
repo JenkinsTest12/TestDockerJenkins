@@ -1,6 +1,6 @@
 upstream vcc
 {
-	server unix:/{{ install_root }}/{{ project_name }}/{{ project_name }}.sock;
+	server unix:{{ install_root }}/{{ project_name }}/{{ project_name }}.sock;
 }
 
 server {

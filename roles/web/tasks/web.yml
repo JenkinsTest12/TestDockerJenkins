@@ -9,10 +9,7 @@
   notify:
   - restart nginx
 
-#- name: django migrate
-    #  django_manage: command=migrate app_path={{ install_root }}/{{ project_name }} pythonpath={{ pythonpath }}
-
-      # APPLICATION USER #
+  # APPLICATION USER #
 - name: Create the application user
   user: name={{ application_user }} password={{ application_user_password_hash }} state=present shell="/bin/bash"
 
