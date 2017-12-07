@@ -1,21 +1,34 @@
 FROM ubuntu:14.04
-MAINTAINER Nick
+MAINTAINER John Smith <john.smith@example.com>
 
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ansible python-apt
+# keep upstart quiet
+RUN dpkg-divert --local --rename --add /sbin/initctl
+RUN ln -sf /bin/true /sbin/initctl
 
-ADD . /srv/
+# no tty
+ENV DEBIAN_FRONTEND noninteractive
 
-RUN sudo apt-get update
-RUN sudo apt-get install -y software-properties-common
-RUN sudo apt-add-repository ppa:ansible/ansible
-RUN sudo apt-get update
-RUN sudo apt-get -y install ansible
+# get up to date
+RUN apt-get update --fix-missing
 
-RUN ansible-playbook -vvvv --inventory-file=/srv/inventory.ini \
-   /srv/start.yml -c local
+# global installs [applies to all envs!]
+RUN apt-get install -y python python-dev python-setuptools
+RUN apt-get install -y python-pip python-virtualenv
+RUN apt-get install -y nginx
 
-CMD ["chmod", "+x", "/srv/entrypoint.sh"]
-CMD ["ls"]
+# create a virtual environment and install all depsendecies from pypi
+RUN virtualenv /opt/venv
+ADD ./requirements.txt /opt/venv/requirements.txt
+RUN /opt/venv/bin/pip install -r /opt/venv/requirements.txt
+
+ADD ./entrypoint.sh ./srv/entrypoint.sh
+ADD ./app ./srv/app
+ADD ./conf/nginx.conf ./etc/nginx
+ADD ./conf/gunicorn.conf /etc/init/gunicorn.conf
+RUN /opt/venv/bin/pip install -r /srv/app/testapp/requirements.txt
 CMD ["sh", "./srv/entrypoint.sh"]
-EXPOSE 80 443
+
+# start supervisor to run our wsgi server
+#CMD cd /opt/app/ && /opt/venv/bin/python app.py
+EXPOSE 80
+EXPOSE 5000
