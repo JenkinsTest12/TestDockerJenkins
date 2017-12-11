@@ -31,4 +31,3 @@ CMD ["sh", "./srv/entrypoint.sh"]
 # start supervisor to run our wsgi server
 #CMD cd /opt/app/ && /opt/venv/bin/python app.py
 EXPOSE 80
-EXPOSE 5000

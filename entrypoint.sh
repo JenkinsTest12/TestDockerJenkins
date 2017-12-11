@@ -6,6 +6,4 @@ exec gunicorn --name test \
               --timeout 0 \
               --bind unix:/opt/venv/bin/gunicorn.sock testapp.wsgi:application &
 exec service nginx start
-#exec service gunicorn start
-#exec opt/venv/bin/python srv/app/testapp/manage.py runserver 0.0.0.0:5000
 
