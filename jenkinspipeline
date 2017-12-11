@@ -1,0 +1,20 @@
+node {
+   def mvnHome
+   stage('Preparation') { // for display purposes
+      git "https://github.com/JenkinsTest12/TestDockerJenkins.git"
+   }
+   stage('Testing')
+   {
+      sh 'docker run hello-world'
+      image = docker.build('testjenkins12/test-repo:latest')
+      image.push()
+   }
+   stage('Deploy') {
+      sh 'echo deploy'
+      sh 'docker pull testjenkins12/test-repo'
+      
+   }
+   stage('Results') {
+      sh "echo result"
+   }
+}
