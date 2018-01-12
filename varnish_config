@@ -6,6 +6,7 @@
 # return statement.
 #
 
+
 # See the VCL chapters in the Users Guide at https://www.varnish-cache.org/docs/
 # and https://www.varnish-cache.org/trac/wiki/VCLExamples for more examples.
 
